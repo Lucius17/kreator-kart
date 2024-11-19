@@ -9,7 +9,7 @@ const CardCreator = () => {
     const [type, setType] = useState('');
     const [cost, setCost] = useState('');
     const [image, setImage] = useState('https://via.placeholder.com/400x250');
-    const [color, setColor] = useState('transparent');
+    const [color, setColor] = useState('#FFFF00');
 
     const titleRef = useRef();
 
@@ -79,8 +79,9 @@ const CardCreator = () => {
         setDescription('');
         setStats('');
         setType('');
+        setCost('');
         setImage('https://via.placeholder.com/400x250');
-        setColor('transparent');
+        setColor('#FFFF00');
     }
 
     return (
