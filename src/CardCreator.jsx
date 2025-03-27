@@ -307,7 +307,7 @@ const CardCreator = () => {
                         </div>
                     </div>
 
-                    <div id="cardContainer" className="relative w-[496px] h-[693px] bg-gray-100 dark:bg-gray-900 rounded-xl shadow-lg">
+                    <div id="cardContainer" className="relative w-[496px] h-[693px]">
                         {Object.keys(arrows).map(direction => (
                             <Arrow key={direction} direction={direction} />
                         ))}

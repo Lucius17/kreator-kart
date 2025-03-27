@@ -70,7 +70,7 @@ const TarotCreator = () => {
     const textStyle = {
         fontFamily: "'Comic Sans MS', cursive",
         color: 'black',
-        fontSize: '20px',
+        fontSize: '25px',
         
     };
 
@@ -146,7 +146,7 @@ const TarotCreator = () => {
                         </div>
                     </div>
 
-                    <div id="cardContainer" className="relative w-[496px] h-[693px] bg-gray-100 dark:bg-gray-900 rounded-xl shadow-lg">
+                    <div id="cardContainer" className="relative w-[496px] h-[693px] ">
                         
 
                         <div
