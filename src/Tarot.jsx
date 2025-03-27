@@ -3,27 +3,12 @@ import { toPng } from 'html-to-image';
 
 const TarotCreator = () => {
     const [title, setTitle] = useState('');
-    const [description, setDescription] = useState('');
-    const [stats, setStats] = useState('');
-    const [type, setType] = useState('');
-    const [cost, setCost] = useState('');
-    const [image, setImage] = useState('https://via.placeholder.com/400x250');
+    const [image, setImage] = useState('https://via.placeholder.com/400x550');
     const [color, setColor] = useState('#FFFFFF');
-    const [arrows, setArrows] = useState({
-        top: false,
-        topRight: false,
-        right: false,
-        bottomRight: false,
-        bottom: false,
-        bottomLeft: false,
-        left: false,
-        topLeft: false
-    });
+    const [imageFit, setImageFit] = useState('fill'); // 'fill', 'contain' lub 'cover'
     const [isDark, setIsDark] = useState(true);
-
     const titleRef = useRef();
 
-    // Custom SVG Arrow Component
     const ArrowIcon = ({ direction, isActive }) => {
         const rotationMap = {
             top: 0,
@@ -77,14 +62,14 @@ const TarotCreator = () => {
 
     const Arrow = ({ direction }) => {
         const positionClasses = {
-            top: 'top-5 left-1/2 -translate-x-1/2',       // Dodano top-2
-            topRight: 'top-5 right-5',                    // Dodano top-2 i right-2
-            right: 'top-1/2 right-7 -translate-y-1/2',    // Dodano right-2
-            bottomRight: 'bottom-5 right-5',              // Dodano bottom-2 i right-2
-            bottom: 'bottom-5 left-1/2 -translate-x-1/2', // Dodano bottom-2
-            bottomLeft: 'bottom-5 left-5',                // Dodano bottom-2 i left-2
-            left: 'top-1/2 left-5 -translate-y-1/2',      // Dodano left-2
-            topLeft: 'top-5 left-5'                       // Dodano top-2 i left-2
+            top: 'top-5 left-1/2 -translate-x-1/2',
+            topRight: 'top-5 right-5',
+            right: 'top-1/2 right-7 -translate-y-1/2',
+            bottomRight: 'bottom-5 right-5',
+            bottom: 'bottom-5 left-1/2 -translate-x-1/2',
+            bottomLeft: 'bottom-5 left-5',
+            left: 'top-1/2 left-5 -translate-y-1/2',
+            topLeft: 'top-5 left-5'
         };
         if (!arrows[direction]) return null;
     
@@ -97,8 +82,6 @@ const TarotCreator = () => {
             </div>
         );
     };
-
-    const setCardColor = (color) => setColor(color);
 
     const handleImageUpload = (event) => {
         const file = event.target.files[0];
@@ -136,22 +119,9 @@ const TarotCreator = () => {
 
     const resetCard = () => {
         setTitle('');
-        setDescription('');
-        setStats('');
-        setType('');
-        setCost('');
-        setImage('https://via.placeholder.com/400x250');
+        setImage('https://via.placeholder.com/400x550');
         setColor('#FFFFFF');
-        setArrows({
-            top: false,
-            topRight: false,
-            right: false,
-            bottomRight: false,
-            bottom: false,
-            bottomLeft: false,
-            left: false,
-            topLeft: false
-        });
+        setImageFit('cover');
     };
 
     const textStyle = {
@@ -185,8 +155,8 @@ const TarotCreator = () => {
                             onChange={(e) => setTitle(e.target.value)}
                             className="p-2 border rounded focus:ring-2 focus:ring-blue-500 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:text-white"
                         />
-                        
 
+                        
 
                         <label className="mb-4">
                             <span className="block text-sm font-semibold mb-2 text-gray-700 dark:text-gray-300">Obrazek</span>
@@ -197,6 +167,29 @@ const TarotCreator = () => {
                                 className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 dark:file:bg-gray-700 dark:file:text-gray-200 dark:hover:file:bg-gray-600"
                             />
                         </label>
+                        <div className="mb-4">
+                            <h3 className="text-sm font-semibold mb-2 text-gray-700 dark:text-gray-300">Styl obrazka</h3>
+                            <div className="flex gap-2">
+                                <button
+                                    onClick={() => setImageFit('fill')}
+                                    className={`px-3 py-1 rounded ${imageFit === 'fill' ? 'bg-blue-600 text-white' : 'bg-gray-200 dark:bg-gray-700'}`}
+                                >
+                                    Wypełnij
+                                </button>
+                                <button
+                                    onClick={() => setImageFit('contain')}
+                                    className={`px-3 py-1 rounded ${imageFit === 'contain' ? 'bg-blue-600 text-white' : 'bg-gray-200 dark:bg-gray-700'}`}
+                                >
+                                    Dopasuj
+                                </button>
+                                <button
+                                    onClick={() => setImageFit('cover')}
+                                    className={`px-3 py-1 rounded ${imageFit === 'cover' ? 'bg-blue-600 text-white' : 'bg-gray-200 dark:bg-gray-700'}`}
+                                >
+                                    Przytnij
+                                </button>
+                            </div>
+                        </div>
 
                         <div className="flex flex-col gap-2 mt-auto">
                             <button
@@ -215,9 +208,7 @@ const TarotCreator = () => {
                     </div>
 
                     <div id="cardContainer" className="relative w-[496px] h-[693px] bg-gray-100 dark:bg-gray-900 rounded-xl shadow-lg">
-                        {Object.keys(arrows).map(direction => (
-                            <Arrow key={direction} direction={direction} />
-                        ))}
+                        
 
                         <div
                             className="absolute inset-0"
@@ -234,41 +225,32 @@ const TarotCreator = () => {
                         />
 
                         <div className="relative h-full p-5 text-center z-30">
-                        <div
+                            <div
                                 ref={titleRef}
                                 className="absolute bottom-10 left-1/2 -translate-x-1/2 w-[90%] text-center"
                                 style={textStyle}
                             >
                                 {title}
                             </div>
+
+                            <div className="absolute top-10 left-1/2 -translate-x-1/2 w-[400px] h-[550px] bg-gray-300 dark:bg-gray-700 rounded-lg overflow-hidden">
                             <img
-                                src={image}
-                                alt="Obrazek Karty"
-                                className="absolute top-10 left-1/2 -translate-x-1/2 w-[400px] h-[550px] object-cover rounded-lg"
-                            />
-
-                            <div
-                                className="absolute top-[360px] left-1/2 -translate-x-1/2 w-[90%] text-center text-xl"
-                                style={textStyle}
-                            >
-                                {description}
+                src={image}
+                alt="Obrazek Karty"
+                className={`w-full h-full ${
+                    imageFit === 'cover' ? 'object-cover' : 
+                    imageFit === 'contain' ? 'object-contain' : 
+                    'object-fill'
+                } bg-white`}
+                style={{
+                    objectFit: imageFit,
+                    backgroundColor: 'white'
+                }}
+            />
                             </div>
 
-                            <div className="absolute bottom-7 right-10 text-lg font-semibold" style={textStyle}>
-                                {stats}
-                            </div>
+                            
 
-                            {cost && (
-                                <div className="absolute bottom-7 right-44 text-lg font-semibold" style={textStyle}>
-                                    Koszt: {cost}
-                                </div>
-                            )}
-
-                            {type && (
-                                <div className="absolute bottom-7 left-10 text-lg font-bold" style={textStyle}>
-                                    {type}
-                                </div>
-                            )}
                         </div>
                     </div>
                 </div>

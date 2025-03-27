@@ -9,6 +9,7 @@ const CardCreator = () => {
     const [cost, setCost] = useState('');
     const [image, setImage] = useState('https://via.placeholder.com/400x250');
     const [color, setColor] = useState('#FFFF00');
+    const [imageFit, setImageFit] = useState('fill'); // 'fill', 'contain' lub 'cover'
     const [arrows, setArrows] = useState({
         top: false,
         topRight: false,
@@ -77,14 +78,14 @@ const CardCreator = () => {
 
     const Arrow = ({ direction }) => {
         const positionClasses = {
-            top: 'top-5 left-1/2 -translate-x-1/2',       // Dodano top-2
-            topRight: 'top-5 right-5',                    // Dodano top-2 i right-2
-            right: 'top-1/2 right-7 -translate-y-1/2',    // Dodano right-2
-            bottomRight: 'bottom-5 right-5',              // Dodano bottom-2 i right-2
-            bottom: 'bottom-5 left-1/2 -translate-x-1/2', // Dodano bottom-2
-            bottomLeft: 'bottom-5 left-5',                // Dodano bottom-2 i left-2
-            left: 'top-1/2 left-5 -translate-y-1/2',      // Dodano left-2
-            topLeft: 'top-5 left-5'                       // Dodano top-2 i left-2
+            top: 'top-5 left-1/2 -translate-x-1/2',
+            topRight: 'top-5 right-5',
+            right: 'top-1/2 right-7 -translate-y-1/2',
+            bottomRight: 'bottom-5 right-5',
+            bottom: 'bottom-5 left-1/2 -translate-x-1/2',
+            bottomLeft: 'bottom-5 left-5',
+            left: 'top-1/2 left-5 -translate-y-1/2',
+            topLeft: 'top-5 left-5'
         };
         if (!arrows[direction]) return null;
     
@@ -142,6 +143,7 @@ const CardCreator = () => {
         setCost('');
         setImage('https://via.placeholder.com/400x250');
         setColor('#FFFF00');
+        setImageFit('cover');
         setArrows({
             top: false,
             topRight: false,
@@ -265,6 +267,30 @@ const CardCreator = () => {
                             />
                         </label>
 
+                        <div className="mb-4">
+    <h3 className="text-sm font-semibold mb-2 text-gray-700 dark:text-gray-300">Styl obrazka</h3>
+    <div className="flex gap-2">
+        <button
+            onClick={() => setImageFit('fill')}
+            className={`px-3 py-1 rounded ${imageFit === 'fill' ? 'bg-blue-600 text-white' : 'bg-gray-200 dark:bg-gray-700'}`}
+        >
+            Wypełnij
+        </button>
+        <button
+            onClick={() => setImageFit('contain')}
+            className={`px-3 py-1 rounded ${imageFit === 'contain' ? 'bg-blue-600 text-white' : 'bg-gray-200 dark:bg-gray-700'}`}
+        >
+            Dopasuj
+        </button>
+        <button
+            onClick={() => setImageFit('cover')}
+            className={`px-3 py-1 rounded ${imageFit === 'cover' ? 'bg-blue-600 text-white' : 'bg-gray-200 dark:bg-gray-700'}`}
+        >
+            Przytnij
+        </button>
+    </div>
+</div>
+
                         <div className="flex flex-col gap-2 mt-auto">
                             <button
                                 onClick={downloadCard}
@@ -309,11 +335,21 @@ const CardCreator = () => {
                                 {title}
                             </div>
 
-                            <img
-                                src={image}
-                                alt="Obrazek Karty"
-                                className="absolute top-20 left-1/2 -translate-x-1/2 w-[400px] h-[250px] object-cover border-4 border-black rounded-lg"
-                            />
+                            <div className="absolute top-20 left-1/2 -translate-x-1/2 w-[400px] h-[250px] bg-gray-300 dark:bg-gray-700 rounded-lg overflow-hidden border-4 border-black">
+            <img
+                src={image}
+                alt="Obrazek Karty"
+                className={`w-full h-full ${
+                    imageFit === 'cover' ? 'object-cover' : 
+                    imageFit === 'contain' ? 'object-contain' : 
+                    'object-fill'
+                } bg-white`}
+                style={{
+                    objectFit: imageFit,
+                    backgroundColor: 'white'
+                }}
+            />
+        </div>
 
                             <div
                                 className="absolute top-[360px] left-1/2 -translate-x-1/2 w-[90%] text-center text-xl"
