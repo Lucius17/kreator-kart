@@ -9,40 +9,6 @@ const TarotCreator = () => {
     const [isDark, setIsDark] = useState(true);
     const titleRef = useRef();
 
-    const ArrowIcon = ({ direction, isActive }) => {
-        const rotationMap = {
-            top: 0,
-            right: 90,
-            bottom: 180,
-            left: 270,
-            topRight: 45,
-            bottomRight: 135,
-            bottomLeft: 225,
-            topLeft: 315
-        };
-
-        return (
-            <svg
-                width="40"
-                height="40"
-                viewBox="0 0 24 24"
-                style={{
-                    transform: `rotate(${rotationMap[direction]}deg)`,
-                    transition: 'all 0.3s ease',
-                    opacity: isActive ? 1 : 0.5
-                }}
-            >
-                <path
-                    d="M12 2L12 22M12 2L22 12M12 2L2 12"
-                    stroke={isActive ? "#ff0000" : "#666"}
-                    strokeWidth="2"
-                    fill="none"
-                    strokeLinecap="round"
-                />
-            </svg>
-        );
-    };
-
     const adjustFontSize = () => {
         const element = titleRef.current;
         if (!element) return;
@@ -58,29 +24,6 @@ const TarotCreator = () => {
 
     const handleArrowClick = (direction) => {
         setArrows(prev => ({...prev, [direction]: !prev[direction]}));
-    };
-
-    const Arrow = ({ direction }) => {
-        const positionClasses = {
-            top: 'top-5 left-1/2 -translate-x-1/2',
-            topRight: 'top-5 right-5',
-            right: 'top-1/2 right-7 -translate-y-1/2',
-            bottomRight: 'bottom-5 right-5',
-            bottom: 'bottom-5 left-1/2 -translate-x-1/2',
-            bottomLeft: 'bottom-5 left-5',
-            left: 'top-1/2 left-5 -translate-y-1/2',
-            topLeft: 'top-5 left-5'
-        };
-        if (!arrows[direction]) return null;
-    
-        return (
-            <div
-                className={`absolute cursor-pointer z-40 ${positionClasses[direction]}`}
-                onClick={() => handleArrowClick(direction)}
-            >
-                <ArrowIcon direction={direction} isActive={arrows[direction]} />
-            </div>
-        );
     };
 
     const handleImageUpload = (event) => {
@@ -126,13 +69,9 @@ const TarotCreator = () => {
 
     const textStyle = {
         fontFamily: "'Comic Sans MS', cursive",
-        color: 'white',
-        textShadow: `
-            -1px -1px 0 #000,
-            1px -1px 0 #000,
-            -1px 1px 0 #000,
-            1px 1px 0 #000,
-            0 2px 2px rgba(0,0,0,0.5)`
+        color: 'black',
+        fontSize: '20px',
+        
     };
 
     return (
